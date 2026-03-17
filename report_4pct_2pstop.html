@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL-USDT Trading Strategy: 4% TP / 2% Rolling Stop Backtest Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #764ba2;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .parameters {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .parameter-badge {
+            display: inline-block;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin: 5px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea0d 0%, #764ba20d 100%);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 5px solid #667eea;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .metric-card.positive {
+            border-left-color: #10b981;
+        }
+        
+        .metric-card.negative {
+            border-left-color: #ef4444;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .metric-value.positive {
+            color: #10b981;
+        }
+        
+        .metric-value.negative {
+            color: #ef4444;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .reason-row {
+            background: #f8f9fa;
+        }
+        
+        .summary-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .summary-box strong {
+            color: #667eea;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        
+        .highlight {
+            background: #fffacd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .comparison-table {
+                font-size: 0.9em;
+            }
+            
+            .comparison-table th, .comparison-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 SOL-USDT Trading Strategy</h1>
+            <p>Scenario Analysis: 4% Take Profit + 2% Rolling Stop + 120-min Timeout</p>
+        </div>
+        
+        <div class="parameters">
+            <div class="parameter-badge">📈 Take Profit: 4%</div>
+            <div class="parameter-badge">🛑 Rolling Stop: 2%</div>
+            <div class="parameter-badge">⏱️ Timeout: 120 min</div>
+            <div class="parameter-badge">💰 Position: $1,000</div>
+            <div class="parameter-badge">🔄 Max Concurrent: 10</div>
+        </div>
+        
+        <div class="content">
+            <div class="navigation">
+                <a href="./index.html" class="nav-button">🏠 Home</a>
+                <a href="./report_english.html" class="nav-button">📊 Original Report</a>
+                <a href="./report_russian.html" class="nav-button">🇷🇺 Русский</a>
+            </div>
+            
+            <!-- Key Metrics -->
+            <div class="section">
+                <h2>📊 Key Performance Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card positive">
+                        <div class="metric-label">Total Trades</div>
+                        <div class="metric-value">262</div>
+                    </div>
+                    
+                    <div class="metric-card positive">
+                        <div class="metric-label">Win Rate</div>
+                        <div class="metric-value">85.11%</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Total Return</div>
+                        <div class="metric-value positive">60.44%</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Monthly Return</div>
+                        <div class="metric-value positive">60.44%</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Avg ROI/Trade</div>
+                        <div class="metric-value">2.307%</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Profit Factor</div>
+                        <div class="metric-value">14.96</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Capital Analysis -->
+            <div class="section">
+                <h2>💰 Capital Analysis</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Initial Capital</strong></td>
+                        <td>$10,000.00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Final Capital</strong></td>
+                        <td><span class="highlight">$16,043.64</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total P&L</strong></td>
+                        <td><span class="highlight">$6,043.64</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Return %</strong></td>
+                        <td><span class="highlight">60.44%</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Trade Statistics -->
+            <div class="section">
+                <h2>📈 Trade Statistics</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Trades</strong></td>
+                        <td>262</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Winning Trades</strong></td>
+                        <td>223</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Losing Trades</strong></td>
+                        <td>39</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Win Rate</strong></td>
+                        <td><span class="highlight">85.11%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average ROI/Trade</strong></td>
+                        <td>2.307%</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Exit Reason Analysis -->
+            <div class="section">
+                <h2>🎯 Exit Reason Breakdown</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Exit Reason</th>
+                        <th>Count</th>
+                        <th>% Trades</th>
+                        <th>Win Rate</th>
+                        <th>Avg ROI</th>
+                        <th>Total P&L</th>
+                    </tr>
+                    <tr class="reason-row">
+                        <td><strong>Take Profit Hit</strong></td>
+                        <td>66</td>
+                        <td>25.2%</td>
+                        <td>100.0%</td>
+                        <td>4.00%</td>
+                        <td>$2640.00</td>
+                    </tr>
+                    <tr class="reason-row">
+                        <td><strong>Rolling Stop Hit</strong></td>
+                        <td>69</td>
+                        <td>26.3%</td>
+                        <td>46.4%</td>
+                        <td>-0.10%</td>
+                        <td>$-71.62</td>
+                    </tr>
+                    <tr class="reason-row">
+                        <td><strong>Timeout</strong></td>
+                        <td>127</td>
+                        <td>48.5%</td>
+                        <td>98.4%</td>
+                        <td>2.74%</td>
+                        <td>$3475.26</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Risk Metrics -->
+            <div class="section">
+                <h2>⚠️ Risk Metrics</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Profit Factor</strong></td>
+                        <td>14.96</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sharpe Ratio</strong></td>
+                        <td>20.89</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max ROI</strong></td>
+                        <td>$40.00 (4.00%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min ROI</strong></td>
+                        <td>$-33.84 (-3.38%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Avg Trade Duration</strong></td>
+                        <td>88.9 minutes</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Comparison -->
+            <div class="section">
+                <h2>🔄 Scenario Comparison</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Original (3% TP)</th>
+                        <th>This Scenario (4% TP + 2% Stop)</th>
+                        <th>Change</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Trades</strong></td>
+                        <td>243</td>
+                        <td>262</td>
+                        <td>+19</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Win Rate</strong></td>
+                        <td>98.4%</td>
+                        <td>85.1%</td>
+                        <td>-13.3%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Return</strong></td>
+                        <td>69.21%</td>
+                        <td>60.44%</td>
+                        <td>-8.77%</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Sample Trades -->
+            <div class="section">
+                <h2>📋 Sample Trades (First 10)</h2>
+                <table class="comparison-table" style="font-size: 0.85em;">
+                    <tr>
+                        <th>#</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>ROI %</th>
+                        <th>P&L $</th>
+                        <th>Duration (min)</th>
+                        <th>Reason</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>$100.82</td>
+                        <td>$103.94</td>
+                        <td style="color: green;"><strong>3.09%</strong></td>
+                        <td style="color: green;">$30.95</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>$100.53</td>
+                        <td>$103.95</td>
+                        <td style="color: green;"><strong>3.41%</strong></td>
+                        <td style="color: green;">$34.05</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>$100.53</td>
+                        <td>$103.78</td>
+                        <td style="color: green;"><strong>3.23%</strong></td>
+                        <td style="color: green;">$32.32</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>$100.41</td>
+                        <td>$103.85</td>
+                        <td style="color: green;"><strong>3.42%</strong></td>
+                        <td style="color: green;">$34.19</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>$100.53</td>
+                        <td>$103.95</td>
+                        <td style="color: green;"><strong>3.40%</strong></td>
+                        <td style="color: green;">$33.99</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>$100.55</td>
+                        <td>$104.01</td>
+                        <td style="color: green;"><strong>3.44%</strong></td>
+                        <td style="color: green;">$34.38</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>$100.58</td>
+                        <td>$104.05</td>
+                        <td style="color: green;"><strong>3.45%</strong></td>
+                        <td style="color: green;">$34.51</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>$100.76</td>
+                        <td>$103.83</td>
+                        <td style="color: green;"><strong>3.04%</strong></td>
+                        <td style="color: green;">$30.43</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>$100.64</td>
+                        <td>$103.76</td>
+                        <td style="color: green;"><strong>3.10%</strong></td>
+                        <td style="color: green;">$30.99</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>$100.66</td>
+                        <td>$103.58</td>
+                        <td style="color: green;"><strong>2.90%</strong></td>
+                        <td style="color: green;">$29.03</td>
+                        <td>120</td>
+                        <td>TIMEOUT</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                    Full trade data: <code>data/backtest_trades_4pct_2pstop.csv</code>
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Report Generated:</strong> 2026-03-17 16:37:09</p>
+            <p>SOL-USDT Trading Strategy | Scenario Analysis: 4% TP + 2% Rolling Stop</p>
+        </div>
+    </div>
+</body>
+</html>

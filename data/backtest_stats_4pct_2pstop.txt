@@ -1,0 +1,17 @@
+BACKTEST RESULTS: 4% Take Profit | 2% Rolling Stop | 120-min Timeout
+======================================================================
+
+Total Trades:          262
+Winning Trades:        223
+Losing Trades:         39
+Win Rate:              85.11%
+Average ROI per Trade: 2.307%
+Profit Factor:         14.96
+Sharpe Ratio:          20.93
+Max Drawdown:          37.67%
+
+Initial Capital:       $10,000.00
+Final Capital:         $16,043.64
+Total P&L:             $6,043.64
+Total Return:          60.44%
+Monthly Return (28d):  60.44%
