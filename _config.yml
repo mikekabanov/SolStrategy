@@ -1,0 +1,34 @@
+# GitHub Pages Configuration for Jekyll
+# This file is optional but recommended for consistency
+
+# Theme (optional - if you want a theme)
+# theme: jekyll-theme-minimal
+
+# Title and description (shown in GitHub)
+title: SOL-USDT Trading Strategy Reports
+description: Comprehensive backtesting results and analysis for Solana trading strategy
+
+# URL Configuration (customize these after creating your repo)
+# url: https://yourusername.github.io
+# baseurl: /SolStrategy
+
+# Build settings
+markdown: kramdown
+permalink: /:title/
+
+# Exclude files from Jekyll processing (not needed since we use HTML directly)
+exclude:
+  - .git
+  - .gitignore
+  - "*.py"
+  - "*.md"
+  - venv/
+  - __pycache__/
+
+# Include data directory for GitHub Pages
+include:
+  - data/
+
+# Output settings
+source: .
+destination: _site

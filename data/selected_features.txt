@@ -1,0 +1,18 @@
+Selected Features for Modeling
+==================================================
+
+ 1. ema_1440
+ 2. ema_288
+ 3. low
+ 4. close_volatility_20
+ 5. close
+ 6. high
+ 7. close_pct_change_60
+ 8. open
+ 9. trades
+10. close_pct_change_15
+11. volume
+12. rsi_14
+13. close_pct_change_5
+14. high_low_range_pct
+15. close_d1

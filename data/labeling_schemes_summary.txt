@@ -1,0 +1,67 @@
+LABELING SCHEMES SUMMARY
+======================================================================
+
+pct_3.0_min_120:
+  Total rows: 39698
+  Labeled: 1518 (3.82%)
+  Avg Max ROI: 4.286%
+  Median Max ROI: 3.909%
+  Avg Time to ROI: 90.0 min
+  Avg Drawdown: -0.452%
+
+pct_2.0_min_120:
+  Total rows: 39698
+  Labeled: 4146 (10.44%)
+  Avg Max ROI: 3.084%
+  Median Max ROI: 2.636%
+  Avg Time to ROI: 84.3 min
+  Avg Drawdown: -0.412%
+
+pct_2.0_min_60:
+  Total rows: 39698
+  Labeled: 1976 (4.98%)
+  Avg Max ROI: 2.913%
+  Median Max ROI: 2.531%
+  Avg Time to ROI: 45.4 min
+  Avg Drawdown: -0.293%
+
+pct_1.0_min_120:
+  Total rows: 39698
+  Labeled: 12415 (31.27%)
+  Avg Max ROI: 1.962%
+  Median Max ROI: 1.621%
+  Avg Time to ROI: 82.0 min
+  Avg Drawdown: -0.379%
+
+pct_1.0_min_60:
+  Total rows: 39698
+  Labeled: 7312 (18.42%)
+  Avg Max ROI: 1.793%
+  Median Max ROI: 1.503%
+  Avg Time to ROI: 42.3 min
+  Avg Drawdown: -0.266%
+
+pct_1.0_min_30:
+  Total rows: 39698
+  Labeled: 3949 (9.95%)
+  Avg Max ROI: 1.657%
+  Median Max ROI: 1.393%
+  Avg Time to ROI: 21.6 min
+  Avg Drawdown: -0.198%
+
+pct_0.5_min_60:
+  Total rows: 39698
+  Labeled: 16683 (42.02%)
+  Avg Max ROI: 1.185%
+  Median Max ROI: 0.917%
+  Avg Time to ROI: 39.7 min
+  Avg Drawdown: -0.249%
+
+pct_0.5_min_30:
+  Total rows: 39698
+  Labeled: 11158 (28.11%)
+  Avg Max ROI: 1.031%
+  Median Max ROI: 0.801%
+  Avg Time to ROI: 20.8 min
+  Avg Drawdown: -0.166%
+
