@@ -1,0 +1,72 @@
+==========================================================================================
+TRAIN GRADIENT BOOSTING MODEL WITH CORRECT 13 FEATURES
+==========================================================================================
+
+[1/6] Loading training data...
+  [OK] Loaded 39,698 rows
+  Label distribution: {0: 38180, 1: 1518}
+
+[2/6] Checking features...
+  [OK] All 13 features found in dataset
+  Features: ema_288, ema_1440, rsi_14, close_d1, close_d2, volume_d1, volume_d2, close_pct_change_1, close_pct_change_5, close_pct_change_15, close_pct_change_60, close_volatility_20, high_low_range_pct
+
+[3/6] Preparing data...
+  NaN values: 0
+  Inf values: 0
+  [OK] Data prepared: 39698 samples, 13 features
+  [OK] Scaler fitted
+
+[4/6] Training Gradient Boosting model...
+  [OK] Model trained!
+    Accuracy: 0.9977 (99.77%)
+    F1 Score: 0.9687
+    ROC-AUC: 0.9975
+
+[5/6] Saving model and configuration...
+  [OK] Model saved: models/gradient_boosting_model_13feat.pkl
+  [OK] Scaler saved: models/scaler_13feat.pkl
+  [OK] Feature names saved: models/feature_names_13feat.txt
+  [OK] Config saved: models/model_config_13feat.txt
+
+[6/6] Running backtest with loaded model...
+
+==========================================================================================
+BACKTEST RESULTS WITH LOADED MODEL (Pct 3.0%, 120 Min Timeout)
+==========================================================================================
+
+Trade Statistics:
+  Total Trades: 274
+  Winning Trades: 274
+  Losing Trades: 0
+  Win Rate: 100.00%
+
+Financial Metrics:
+  Initial Capital: $10,000
+  Final Capital: $18,172
+  Total P&L: $8,172
+  Total Return: 81.72%
+
+Average Trade Metrics:
+  Average Win (when profitable): 2.98%
+  Average Loss (when unprofitable): 0.00%
+  Average ROI per Trade: 2.98%
+
+Risk Metrics:
+  Max Drawdown: 12.50%
+  Profit Factor: 8171603564.74x
+  Sharpe Ratio: 457.01
+
+Signal Statistics:
+  Total signals generated: 1,451
+  Signal hit rate: 3.66%
+
+==========================================================================================
+[OK] BACKTEST COMPLETE - MODEL LOADED AND VALIDATED
+==========================================================================================
+
+
+Model Files Created:
+  1. models/gradient_boosting_model_13feat.pkl (153 KB)
+  2. models/scaler_13feat.pkl
+  3. models/feature_names_13feat.txt
+  4. models/model_config_13feat.txt

@@ -1,0 +1,38 @@
+Gradient Boosting Model (13 Features - pct_3.0_min_120)
+==========================================================
+
+Model Configuration:
+  Type: GradientBoostingClassifier
+  n_estimators: 100
+  max_depth: 5
+  learning_rate: 0.1
+  random_state: 42
+
+Performance Metrics (Full Dataset):
+  Accuracy: 0.9977 (99.77%)
+  F1 Score: 0.9687
+  ROC-AUC: 0.9975
+
+Features (13 total):
+  1. ema_288
+  2. ema_1440
+  3. rsi_14
+  4. close_d1
+  5. close_d2
+  6. volume_d1
+  7. volume_d2
+  8. close_pct_change_1
+  9. close_pct_change_5
+  10. close_pct_change_15
+  11. close_pct_change_60
+  12. close_volatility_20
+  13. high_low_range_pct
+
+Training Data:
+  Total Samples: 39,698
+  Positive Class (1): 1,518
+  Negative Class (0): 38,180
+
+Purpose: Predict probability of SOL-USDT price increasing >= 3% within 120 minutes
+Confidence Threshold: >= 0.50 for ENTRY signal
+Backtest Results: 243 trades, 98.4% win rate, 69.21% return
